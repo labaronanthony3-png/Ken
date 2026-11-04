@@ -1,0 +1,272 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>The Next Quest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Poppins:wght@500;700;800&family=UnifrakturCook:wght@700&display=swap">
+<style>
+/* Layout: six 16:9 "game screens" stacked on a dark baseplate with studs. Blocky hard-edged HUD panels, mono lowercase labels from Ken's store, red offset shadows. */
+:root{--bg:#08080a;--stud:#1b1b20;--panel:#0f0f12;--fg:#f6f4f3;--dim:#b9b6b6;--red:#ff2a3a;--white:#fff;--ink:#000;color-scheme:dark;
+--sans:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;--gothic:UnifrakturCook,"Old English Text MT",Georgia,serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:500;line-height:1.5;font-size:clamp(13px,1.35vw,18px);padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+img{display:block;max-width:100%}
+h1,h2,h3,p{margin:0}
+.slide{position:relative;max-width:1280px;margin:0 auto 28px;aspect-ratio:16/9;border:4px solid var(--white);background-color:var(--bg);background-image:radial-gradient(circle at center,var(--stud) 0 24%,transparent 26%);background-size:44px 44px;padding:clamp(18px,3vw,44px);display:flex;flex-direction:column;gap:clamp(10px,1.6vw,22px);overflow:hidden;min-width:0}
+.slide>*{min-width:0}
+@media(max-width:900px){.slide{aspect-ratio:auto}}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--mono);font-weight:700;font-size:.78em;letter-spacing:.06em;color:var(--dim);text-transform:lowercase}
+.hud img{width:clamp(84px,11vw,150px)}
+.hud b{color:var(--red)}
+h2{font-weight:800;text-transform:uppercase;line-height:1.02;font-size:clamp(24px,4.4vw,56px);letter-spacing:-.01em;text-wrap:balance}
+.gt{font-family:var(--gothic);font-weight:700;text-transform:none;letter-spacing:0}
+.mono{font-family:var(--mono);text-transform:lowercase}
+.lede{color:var(--dim);font-size:1.12em;max-width:58ch}
+.panel{border:3px solid var(--white);background:var(--panel);box-shadow:6px 6px 0 var(--red);padding:clamp(12px,1.6vw,22px);min-width:0}
+.panel.w{background:var(--white);color:var(--ink);box-shadow:6px 6px 0 var(--red)}
+.panel.w .dim,.panel.w p{color:#252525}
+.ptitle{font-family:var(--mono);font-weight:700;font-size:.8em;letter-spacing:.08em;text-transform:lowercase;color:var(--red);margin-bottom:8px}
+.panel.w .ptitle{color:#b00020}
+.panel h3{font-weight:800;text-transform:uppercase;font-size:1.25em;line-height:1.15}
+.panel p{color:var(--dim);margin-top:6px;font-size:.95em}
+.grow{flex:1;min-height:0}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2.4vw,32px);align-items:stretch}
+.cols>*{min-width:0}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,26px)}
+@media(max-width:900px){.cols,.three{grid-template-columns:1fr}}
+
+/* 1 loading */
+.load{align-items:center;justify-content:center;text-align:center}
+.load .mono{color:var(--dim);font-weight:700;letter-spacing:.06em}
+.load h1{font-weight:800;text-transform:uppercase;font-size:clamp(18px,3vw,38px);letter-spacing:.1em;line-height:1.15}
+.load .gt{display:block;font-size:clamp(40px,7.4vw,100px);line-height:1;margin-top:6px;text-shadow:5px 0 0 rgba(255,42,58,.55);text-wrap:balance}
+.bar{width:min(620px,100%);height:26px;border:3px solid var(--white);padding:3px;display:flex;gap:3px;background:var(--ink)}
+.bar i{flex:1;background:var(--red)}
+.cv{display:grid;gap:6px;justify-items:center}
+.cv1{font-weight:800;text-transform:uppercase;font-size:clamp(18px,3.4vw,46px);line-height:1.1;letter-spacing:.02em;text-wrap:balance}
+.cv2{font-weight:800;text-transform:uppercase;font-size:clamp(20px,3.8vw,52px);line-height:1.1;color:var(--red)}
+.cv3{font-weight:800;text-transform:uppercase;font-size:clamp(16px,2.8vw,38px);line-height:1.1;text-wrap:balance}
+.slide.tall{aspect-ratio:auto}
+.clips{align-items:start}
+.clip{margin:0;display:grid;gap:8px}
+.clip video{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--ink);border:3px solid var(--white);box-shadow:6px 6px 0 var(--red);display:block}
+.clip figcaption{font-weight:800;font-size:1.05em;text-transform:uppercase;letter-spacing:.02em;color:var(--fg)}
+.three.clips{grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.6vw,22px)}
+.clip video{box-shadow:4px 4px 0 var(--red)}
+.btn{cursor:pointer;font-family:var(--mono)}
+.fly{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(16px,2.4vw,32px);align-items:start}
+.fly .shot img{aspect-ratio:4/5;display:block}
+.fly .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+@media(max-width:800px){.fly{grid-template-columns:1fr}}
+.venue{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.venue figure{margin:0}
+.venue .shot img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+@media(max-width:700px){.venue{grid-template-columns:1fr}}
+.wait{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.wait img{width:100%;aspect-ratio:4/5;object-fit:cover;border:3px solid var(--ink)}
+.ask p{margin:0;font-weight:800;text-transform:uppercase;font-size:clamp(15px,2vw,26px);line-height:1.2;color:var(--ink)}
+.ask .ptitle{margin-bottom:6px}
+.ask .ask2{margin-top:10px;color:#b00020}
+.tip{border:3px solid var(--white);padding:10px 16px;font-family:var(--mono);font-weight:500;font-size:.88em;max-width:62ch;background:var(--panel)}
+
+/* 2 quest log */
+.quest{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.quest li{display:flex;gap:12px;align-items:flex-start;font-weight:700}
+.quest li span{flex:none;width:22px;height:22px;border:3px solid var(--white);background:var(--red);display:flex;align-items:center;justify-content:center}
+.quest li small{display:block;color:var(--dim);font-weight:500;font-size:.85em}
+.next h2{font-size:clamp(22px,3.6vw,46px)}
+.next .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.tag{border:3px solid var(--ink);padding:4px 12px;font-family:var(--mono);font-weight:700;font-size:.82em;text-transform:lowercase}
+
+/* 3 inventory */
+.inv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.slot{border:3px solid var(--white);background:var(--panel);padding:12px 10px;min-height:clamp(54px,7vw,92px);display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.slot b{font-family:var(--mono);font-size:.92em;text-transform:lowercase;line-height:1.2;overflow-wrap:anywhere}
+.slot small{font-family:var(--mono);font-size:.72em;color:var(--red);font-weight:700}
+.slot.hot{background:var(--red);border-color:var(--white)}
+.slot.hot small{color:var(--white)}
+.shot{border:3px solid var(--white);box-shadow:6px 6px 0 var(--red);position:relative;overflow:hidden;background:var(--ink)}
+.shot img{width:100%;height:100%;object-fit:cover;aspect-ratio:2/1}
+.slide .shot.grow{display:flex;min-height:0}
+.slide .shot.grow img{flex:1;height:auto;aspect-ratio:auto;min-height:0}
+@media(max-width:900px){.slide .shot.grow img{aspect-ratio:16/10}}
+.shot span{position:absolute;left:10px;bottom:8px;font-family:var(--mono);font-weight:700;font-size:.78em;background:var(--ink);padding:2px 8px;border:2px solid var(--white)}
+
+/* 4 why */
+.chat{display:grid;gap:8px}
+.chat a{display:flex;justify-content:space-between;gap:12px;align-items:center;border:3px solid var(--white);padding:8px 14px;background:var(--panel);font-family:var(--mono);font-weight:700;font-size:.88em;text-transform:lowercase;transition:background .12s,color .12s}
+.chat a:hover{background:var(--white);color:var(--ink)}
+.chat em{font-style:normal;color:var(--red)}
+.chat a:hover em{color:#b00020}
+
+/* 5 loot */
+.loot .big{color:var(--red);font-weight:800;font-size:clamp(44px,8vw,104px);line-height:.92;letter-spacing:-.04em}
+.loot h3{margin-top:8px}
+.loot .panel p{font-size:.92em;color:#252525;text-transform:uppercase;line-height:1.35}
+.loot .panel p b{color:var(--ink)}
+.loot .panel p.ex{border-top:3px solid var(--ink);margin-top:12px;padding-top:10px}
+.perks{display:flex;gap:12px;flex-wrap:wrap}
+.perks div{border:3px solid var(--white);padding:10px 16px;font-weight:800;text-transform:uppercase;background:var(--panel);font-size:.95em}
+.perks span{color:var(--red);margin-right:8px}
+
+/* 6 close */
+.end{justify-content:center}
+.end h2{font-size:clamp(28px,5.4vw,70px)}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;font-family:var(--mono);font-weight:700;font-size:1em;border:3px solid var(--white);background:var(--red);color:var(--white);text-transform:lowercase;box-shadow:5px 5px 0 var(--white)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-weight:700;font-size:.8em;color:var(--dim);text-transform:lowercase}
+.keys{max-width:1280px;margin:0 auto 12px;font-family:var(--mono);font-weight:500;font-size:.8em;color:var(--dim);text-align:right}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+<p class="keys">use the arrow keys or scroll to move between screens</p>
+
+<main id="deck">
+<!-- 1 -->
+<section class="slide load" id="s1" aria-label="Cover">
+<div class="hud" style="position:absolute;left:clamp(18px,3vw,44px);right:clamp(18px,3vw,44px);top:clamp(18px,3vw,36px)"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>1</b>/9</span></div>
+<div class="mono">//loading_atlanta</div>
+<h1>Atlanta deserves the<span class="gt">Ken Carson Experience</span></h1>
+<div class="bar" role="img" aria-label="Loading complete"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="cv"><div class="cv1">Unfazed Streetwear Market &times; Ken Carson</div><div class="cv2">December 19th, 2026</div><div class="cv3">Georgia International Convention Center</div></div>
+</section>
+
+<!-- videos -->
+<section class="slide tall" id="sv" aria-label="Atlanta fan clips">
+<div class="hud"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>2</b>/9 //day_1_base</span></div>
+<h2>ComplexCon got the Experience <span class="gt" style="color:var(--red)">but the Day 1 Atlanta base is ready.</span></h2>
+<div class="panel w ask"><div class="ptitle">//requests</div><p>Atlanta fashion brands have been requesting Ken Carson as host of Unfazed Streetwear Market for over a year.</p><p class="ask2">He is the face of fashion, and Unfazed is the best platform to showcase in the city every year as he grows.</p></div>
+<div style="display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap"><button class="btn" id="playall" type="button" hidden>&#9654; play videos</button><button class="btn" id="snd" type="button" aria-pressed="false">sound: off</button></div>
+<div class="three clips"><figure class="clip"><video src="videos/fan-1.mp4" poster="videos/fan-1.jpg" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Unfazed event clip 1"></video><figcaption>Lil Yachty, Quavo</figcaption></figure><figure class="clip"><video src="videos/fan-2.mp4" poster="videos/fan-2.jpg" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Unfazed event clip 2"></video><figcaption>Duke Dennis, Fanum</figcaption></figure><figure class="clip"><video src="videos/fan-3.mp4" poster="videos/fan-3.jpg" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Unfazed event clip 3"></video><figcaption>DDG, Quan</figcaption></figure></div>
+</section>
+
+<!-- 5 -->
+<section class="slide loot tall" id="s5" aria-label="The deal">
+<div class="hud"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>3</b>/9 //loot_drop</span></div>
+<h2>Built to favor Ken. <span class="gt" style="color:var(--red)">Loot is yours.</span></h2>
+<div class="three">
+<div class="panel w"><div class="big">50%</div><h3>Of sponsorship</h3><p><b>Let's collect sponsors and split the sponsorship money.</b> Brands pay to reach your fans, and half comes straight to you.</p><p class="ex"><b>Example: 5 $10,000 sponsors means <span style="color:var(--red)">$25,000</span> on sponsorships alone, and that is aiming low. Many sponsors will jump on this opportunity.</b></p></div>
+<div class="panel w"><div class="big">70%</div><h3>Of ticket revenue</h3><p><b>More promotion = more money for Ken Carson.</b> 70% of every ticket is yours, and the harder we push it together, the more you make.</p><p class="ex"><b>Example: 3,000 tickets at $20 each means Ken gets <span style="color:var(--red)">$42,000</span> just on tickets.</b></p></div>
+<div class="panel w"><div class="big">100%</div><h3>Of merch sales</h3><p><b>Fans want Ken Carson merch, and that adds thousands in revenue.</b> Every dollar from your booth is yours.</p><p class="ex"><b>Example: 200 $100 hoodies means <span style="color:var(--red)">$20,000</span> on merch alone.</b></p></div>
+</div>
+<div class="perks"><div><span>+</span>Booth as big as you want</div><div><span>+</span>No performance, just a walk-through</div><div><span>+</span>Care packages from brand owners</div></div>
+</section>
+
+<!-- 2 -->
+<section class="slide tall" id="s2" aria-label="Unfazed Streetwear Market">
+<div class="hud"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>4</b>/9 //the_server</span></div>
+<h2>The biggest fashion platform in Atlanta. <span class="gt" style="color:var(--red)">Your community is already here.</span></h2>
+<div class="cols grow">
+<div class="panel">
+<div class="ptitle">//server_status: unfazed streetwear market</div>
+<ul class="quest">
+<li><span aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 6.5 4.5 10 11 2" stroke="#fff" stroke-width="2.4" fill="none"/></svg></span><div>Previous hosts with their own crowds<small>Lil Yachty, Duke Dennis, Quavo, DDG, Fanum, Quan</small></div></li>
+<li><span aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 6.5 4.5 10 11 2" stroke="#fff" stroke-width="2.4" fill="none"/></svg></span><div>Biggest fashion platform in Atlanta<small>the most influential streetwear event and brand in the city</small></div></li>
+<li><span aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 6.5 4.5 10 11 2" stroke="#fff" stroke-width="2.4" fill="none"/></svg></span><div>A community that relates to Ken<small>Gen Z and Gen Alpha, alternative rap, streamer driven</small></div></li>
+<li><span aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 6.5 4.5 10 11 2" stroke="#fff" stroke-width="2.4" fill="none"/></svg></span><div>Partners like Nike, Hibbett and Quavo<small>in-person, digital and clothing</small></div></li>
+<li><span aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 6.5 4.5 10 11 2" stroke="#fff" stroke-width="2.4" fill="none"/></svg></span><div>Sponsors will pay major $$$<small>to create this experience during Christmas time</small></div></li>
+</ul>
+</div>
+<div class="panel w next">
+<div class="ptitle">//players_waiting</div>
+<h2>They are already waiting</h2>
+<p style="margin-top:10px;font-weight:700">You took the culture into Roblox. Unfazed is where that same community shows up in person.</p>
+<div class="row"><span class="tag">dec 19 / atlanta</span><span class="tag">no performance required</span></div>
+<p style="margin-top:12px">Ken does not have to build an audience here. Unfazed already has it in the room.</p>
+<div class="wait"><img src="assets/wait-1.jpg" alt="Fans lining up outside a past Unfazed event in Atlanta" loading="lazy"><img src="assets/wait-2.jpg" alt="Crowd shopping at a past Unfazed Streetwear Market" loading="lazy"><img src="assets/wait-3.jpg" alt="Packed floor at a past Unfazed Streetwear Market" loading="lazy"></div>
+</div>
+</div>
+</section>
+
+<!-- venue -->
+<section class="slide tall" id="sg" aria-label="The venue">
+<div class="hud"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>5</b>/9 //the_venue</span></div>
+<h2>The venue is ready. <span class="gt" style="color:var(--red)">Christmas is the perfect time.</span></h2>
+<div class="row" style="margin-bottom:14px"><span class="tag" style="background:var(--white);color:var(--ink)">40,000 sq ft of space</span><span class="tag" style="background:var(--white);color:var(--ink)">already booked by unfazed</span></div>
+<div class="venue">
+<figure class="shot"><img src="assets/venue-1.jpg" alt="Empty ballroom at the Georgia International Convention Center" loading="lazy"><span>ballroom</span></figure>
+<figure class="shot"><img src="assets/venue-2.jpg" alt="Concourse at the Georgia International Convention Center" loading="lazy"><span>concourse</span></figure>
+<figure class="shot"><img src="assets/venue-3.jpg" alt="Georgia International Convention Center sign" loading="lazy"><span>georgia international convention center</span></figure>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="s3" aria-label="Booth concept render">
+<div class="hud"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>6</b>/9 //concept_render</span></div>
+<figure class="shot grow" style="margin:0"><img src="assets/booth.jpg" alt="Concept render of a Ken Carson booth with a blackletter sign, chains, racks and red lighting"><span>concept render</span></figure>
+</section>
+
+<!-- 4 -->
+<section class="slide" id="s4" aria-label="Why Unfazed">
+<div class="hud"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>7</b>/9 //why_unfazed</span></div>
+<h2>Why Unfazed. <span class="gt" style="color:var(--red)">Why Atlanta.</span></h2>
+<div class="three">
+<div class="panel"><div class="ptitle">//same_players</div><h3>The ComplexCon crowd</h3><p>Gen Z and Gen Alpha, streamer driven, deep in the alternative rap scene. The fans at ComplexCon are the Unfazed demographic.</p></div>
+<div class="panel"><div class="ptitle">//custom_server</div><h3>Tailored to your audience</h3><p>Every Unfazed host brings their own crowd and each edition is catered to it. Dec 19 is themed for yours, with the ComplexCon look recreated.</p></div>
+<div class="panel w"><div class="ptitle">//home_server</div><h3>Atlanta shows more love</h3><p>Atlanta is your main audience and Unfazed is the most influential fashion platform in the city. Be the face of Atlanta fashion.</p></div>
+</div>
+<div class="chat" aria-label="Fan reaction links">
+<a href="https://www.instagram.com/reels/DeGTjRNsmPV/" target="_blank" rel="noopener"><span>fans reacting / instagram reel 01</span><em>watch &rarr;</em></a>
+<a href="https://www.tiktok.com/@kencarsonrelated/video/7692504352161910038" target="_blank" rel="noopener"><span>fans reacting / tiktok 02</span><em>watch &rarr;</em></a>
+<a href="https://www.instagram.com/reels/DeF4Mf-y_NE/" target="_blank" rel="noopener"><span>fans reacting / instagram reel 03</span><em>watch &rarr;</em></a>
+</div>
+</section>
+
+<!-- flyer -->
+<section class="slide tall" id="sf" aria-label="Event flyer and tickets">
+<div class="hud"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>8</b>/9 //flyer_ready</span></div>
+<h2>The flyer is ready. <span class="gt" style="color:var(--red)">Tickets go on sale the moment you say yes.</span></h2>
+<div class="fly">
+<figure class="shot" style="margin:0"><img src="assets/flyer.jpg" alt="Flyer: Unfazed Exhibit presents Unfazed Streetwear Market hosted by Ken Carson, December 19, 2026, 1PM-8PM, Georgia International Convention Center, College Park, GA"></figure>
+<div class="panel w">
+<div class="ptitle">//unfazed_exhibit x ken_carson</div>
+<h3>Unfazed Exhibit presents Unfazed Streetwear Market hosted by Ken Carson</h3>
+<p>The collab flyer is designed and ready to post. We start selling tickets immediately, so your community can lock in for December 19th.</p>
+<div class="tags"><span class="tag">dec 19 / 1pm-8pm</span><span class="tag">gicc / college park, ga</span></div>
+<p><b>70% of every ticket sold goes to Ken Carson.</b> More promotion = more money for Ken Carson.</p>
+</div>
+</div>
+</section>
+
+<!-- 6 -->
+<section class="slide end" id="s6" aria-label="Close">
+<div class="hud" style="position:absolute;left:clamp(18px,3vw,44px);right:clamp(18px,3vw,44px);top:clamp(18px,3vw,36px)"><img src="assets/unfazed-logo-white.png" alt="Unfazed"><span>screen <b>9</b>/9 //end_of_year</span></div>
+<div class="mono" style="color:var(--red);font-weight:700">//final_quest</div>
+<h2>End the year with <span class="gt" style="color:var(--red);font-size:1.25em;display:block;text-shadow:4px 0 0 rgba(255,255,255,.18)">your community.</span></h2>
+<p class="lede">Roblox gave them the server. Atlanta gives them the room. Walk the floor, take the care packages and show them you do this for Atlanta too.</p>
+<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><span class="btn">accept quest: dec 19</span><span class="mono" style="font-weight:700">georgia international convention center / atlanta, ga</span></div>
+<div class="foot"><span>labaron anthony / founder, unfazed</span><span>stay unfazed</span></div>
+</section>
+</main>
+
+<script>
+(function(){
+var s=[].slice.call(document.querySelectorAll('.slide'));
+function cur(){var y=window.scrollY+window.innerHeight/3,i=0;s.forEach(function(e,k){if(e.offsetTop<=y)i=k});return i}
+document.addEventListener('keydown',function(e){
+var t=e.target&&e.target.tagName;if(t==='INPUT'||t==='TEXTAREA')return;
+var d=e.key==='ArrowRight'||e.key==='ArrowDown'||e.key==='PageDown'?1:e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'?-1:0;
+if(!d)return;e.preventDefault();var n=Math.max(0,Math.min(s.length-1,cur()+d));s[n].scrollIntoView({behavior:'smooth',block:'center'})});
+})();
+(function(){
+var vs=[].slice.call(document.querySelectorAll('video')),snd=false,btn=document.getElementById('snd');
+function go(v){v.muted=!snd;var p=v.play();if(p&&p.catch)p.catch(function(){if(!v.muted){v.muted=true;var q=v.play();if(q&&q.catch)q.catch(function(){})}})}
+function all(){vs.forEach(go)}
+vs.forEach(function(v){
+v.loop=true;
+v.addEventListener('pause',function(){if(!document.hidden)setTimeout(function(){go(v)},60)});
+v.addEventListener('ended',function(){v.currentTime=0;go(v)});
+v.addEventListener('stalled',function(){go(v)});
+v.addEventListener('canplay',function(){go(v)});
+});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)go(e.target)})},{threshold:.2});vs.forEach(function(v){io.observe(v)})}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)all()});
+['click','touchstart','keydown','scroll'].forEach(function(ev){window.addEventListener(ev,all,{passive:true,once:true})});
+setInterval(function(){if(!document.hidden)vs.forEach(function(v){if(v.paused)go(v)})},1500);
+if(btn)btn.addEventListener('click',function(){snd=!snd;btn.textContent='sound: '+(snd?'on':'off');btn.setAttribute('aria-pressed',snd);all()});
+var pa=document.getElementById('playall');
+if(pa){pa.addEventListener('click',function(){all();pa.hidden=true});setTimeout(function(){if(vs.some(function(v){return v.paused}))pa.hidden=false},1800);vs.forEach(function(v){v.addEventListener('playing',function(){if(vs.every(function(x){return !x.paused}))pa.hidden=true})})}
+all();
+})();
+</script>
+</body></html>
